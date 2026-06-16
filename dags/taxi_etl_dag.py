@@ -16,7 +16,7 @@ default_args = {
 with DAG(
     "taxi_data_etl",
     default_args=default_args,
-    description="ETL local para datos de taxis",
+    description="Local ETL for taxi data",
     schedule_interval="@daily",
     start_date=datetime(2026, 6, 15),
     catchup=False,
