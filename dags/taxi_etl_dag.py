@@ -22,18 +22,18 @@ with DAG(
     catchup=False,
     tags=["exercise_1"],
 ) as dag:
-    # Tarea 1: Descargar archivo
+    # Task 1: Download file
     # download_task = BashOperator(...)
 
-    # Tarea 2: Limpiar datos con Pandas
+    # Task 2: Clean data with Pandas
     # clean_data_task = PythonOperator(...)
 
-    # Tarea 3: Crear tabla en PostgreSQL
+    # Task 3: Create table in PostgreSQL
     # create_table_task = SQLExecuteQueryOperator(...)
 
-    # Tarea 4: Insertar datos en PostgreSQL
+    # Task 4: Insert data into PostgreSQL
     # insert_data_task = PythonOperator(...) o SQLExecuteQueryOperator(...)
 
-    # Definir dependencias (ejemplo)
+    # Define dependencies (example)
     # download_task >> clean_data_task >> create_table_task >> insert_data_task
     pass

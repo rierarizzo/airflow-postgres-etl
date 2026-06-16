@@ -1,11 +1,11 @@
-# Airflow 3 + PostgreSQL - LocalExecutor (desarrollo local)
-# Servicios: postgres, airflow-init, api-server, scheduler, dag-processor, triggerer
+# Airflow 3 + PostgreSQL - LocalExecutor (local development)
+# Services: postgres, airflow-init, api-server, scheduler, dag-processor, triggerer
 #
-# Antes de levantar por primera vez:
+# Before starting for the first time:
 #   mkdir -p ./dags ./logs ./plugins
 #   echo "AIRFLOW_UID=$(id -u)" > .env
 #
-# Levantar:
+# Start:
 #   docker compose up -d
 # UI disponible en: http://localhost:8080 (admin / admin)
 
@@ -18,9 +18,9 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__FERNET_KEY: fbZ1QFZORCheckNoUJ39wUsh74vY6ba_Y0tAd88998=
     AIRFLOW__CORE__LOAD_EXAMPLES: "false"
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
-    # Requerido en Airflow 3: indica a scheduler y dag-processor dónde está el API server
+    # Required in Airflow 3: tells scheduler and dag-processor where the API server is
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-apiserver:8080/execution/"
-    # JWT secret compartido entre todos los servicios
+    # JWT secret shared across all services
     AIRFLOW__API_AUTH__JWT_SECRET: "dev_jwt_secret_cambiar_en_produccion"
     _PIP_ADDITIONAL_REQUIREMENTS: "pandas pyarrow"
   volumes:
@@ -61,7 +61,7 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: admin
     restart: "no"
 
-  # En Airflow 3, el webserver se llama api-server
+  # In Airflow 3, the webserver is called api-server
   airflow-apiserver:
     <<: *airflow-common
     command: api-server
@@ -94,7 +94,7 @@ services:
       airflow-apiserver:
         condition: service_healthy
 
-  # En Airflow 3, el parsing de DAGs es un proceso separado
+  # In Airflow 3, DAG parsing is a separate process
   airflow-dag-processor:
     <<: *airflow-common
     command: dag-processor
@@ -103,7 +103,7 @@ services:
       airflow-apiserver:
         condition: service_healthy
 
-  # Necesario para tareas diferibles (deferrable operators)
+  # Needed for deferrable tasks (deferrable operators)
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
