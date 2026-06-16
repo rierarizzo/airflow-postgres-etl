@@ -1,0 +1,1 @@
+This repository contains a local-execution ETL pipeline orchestrated with Apache Airflow via Docker Compose. The workflow (DAG) extracts public NYC Green Taxi trip records in Parquet format, processes and filters the information using Pandas, and persists the transformed data into a PostgreSQL database.

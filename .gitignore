@@ -1,0 +1,18 @@
+# Local virtual environments
+venv/
+.venv/
+
+# Airflow logs (auto-generated and heavy files)
+logs/
+
+# Environment variables (contains your local AIRFLOW_UID)
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor configurations (optional but recommended)
+.vscode/
+.idea/
