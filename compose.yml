@@ -84,7 +84,7 @@ services:
     <<: *airflow-common
     command: scheduler
     healthcheck:
-      test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--hostname", "$${HOSTNAME}"]
+      test: ["CMD-SHELL", "airflow db check"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -108,7 +108,7 @@ services:
     <<: *airflow-common
     command: triggerer
     healthcheck:
-      test: ["CMD", "airflow", "jobs", "check", "--job-type", "TriggererJob", "--hostname", "$${HOSTNAME}"]
+      test: ["CMD-SHELL", "airflow db check"]
       interval: 30s
       timeout: 10s
       retries: 5

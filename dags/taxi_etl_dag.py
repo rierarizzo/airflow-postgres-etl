@@ -17,7 +17,7 @@ with DAG(
     "taxi_data_etl",
     default_args=default_args,
     description="Local ETL for taxi data",
-    schedule_interval="@daily",
+    schedule="@daily",
     start_date=datetime(2026, 6, 15),
     catchup=False,
     tags=["exercise_1"],
