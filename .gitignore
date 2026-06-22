@@ -16,3 +16,6 @@ __pycache__/
 # Editor configurations (optional but recommended)
 .vscode/
 .idea/
+
+# Local files
+datasets/

@@ -1,3 +1,4 @@
+import pandas as pd
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.providers.standard.operators.bash import BashOperator
@@ -27,8 +28,23 @@ with DAG(
         bash_command='curl -o /opt/airflow/green_tripdata_2026-04.parquet "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2026-04.parquet"',
     )
 
-    # Task 2: Clean data with Pandas
-    # clean_data_task = PythonOperator(...)
+    def clean_taxi_data(input_path, output_path):
+        df = pd.read_parquet(input_path)
+        filtered_df = df[
+            (df["passenger_count"] > 0)
+            & (df["fare_amount"] > 0)
+            & (df["total_amount"] > 0)
+        ]
+        filtered_df.to_parquet(output_path, index=False)
+
+    clean_data_task = PythonOperator(
+        task_id="clean_data_task",
+        python_callable=clean_taxi_data,
+        op_kwargs={
+            "input_path": "/opt/airflow/green_tripdata_2026-04.parquet",
+            "output_path": "/opt/airflow/green_tripdata_2026-04-cleaned.parquet",
+        },
+    )
 
     # Task 3: Create table in PostgreSQL
     # create_table_task = SQLExecuteQueryOperator(...)
@@ -38,4 +54,5 @@ with DAG(
 
     # Define dependencies (example)
     # download_task >> clean_data_task >> create_table_task >> insert_data_task
+    download_task >> clean_data_task
     pass
