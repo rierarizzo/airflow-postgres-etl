@@ -10,7 +10,7 @@ default_args = {
     "email_on_failure": False,
     "email_on_retry": False,
     "retries": 1,
-    "retry_delay": timedelta(minutes=5)
+    "retry_delay": timedelta(minutes=5),
 }
 
 with DAG(
@@ -22,8 +22,10 @@ with DAG(
     catchup=False,
     tags=["exercise_1"],
 ) as dag:
-    # Task 1: Download file
-    # download_task = BashOperator(...)
+    download_task = BashOperator(
+        task_id="download_green_taxi_parquet",
+        bash_command='curl -o /opt/airflow/green_tripdata_2026-04.parquet "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2026-04.parquet"',
+    )
 
     # Task 2: Clean data with Pandas
     # clean_data_task = PythonOperator(...)
