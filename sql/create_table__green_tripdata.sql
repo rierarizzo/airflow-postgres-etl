@@ -1,0 +1,23 @@
+CREATE TABLE green_tripdata (
+	"VendorID" INTEGER, 
+	lpep_pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
+	lpep_dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
+	store_and_fwd_flag TEXT, 
+	"RatecodeID" FLOAT(53), 
+	"PULocationID" INTEGER, 
+	"DOLocationID" INTEGER, 
+	passenger_count FLOAT(53), 
+	trip_distance FLOAT(53), 
+	fare_amount FLOAT(53), 
+	extra FLOAT(53), 
+	mta_tax FLOAT(53), 
+	tip_amount FLOAT(53), 
+	tolls_amount FLOAT(53), 
+	ehail_fee FLOAT(53), 
+	improvement_surcharge FLOAT(53), 
+	total_amount FLOAT(53), 
+	payment_type FLOAT(53), 
+	trip_type FLOAT(53), 
+	congestion_surcharge FLOAT(53), 
+	cbd_congestion_fee FLOAT(53)
+)

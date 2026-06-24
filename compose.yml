@@ -23,9 +23,11 @@ x-airflow-common: &airflow-common
     # JWT secret shared across all services
     AIRFLOW__API_AUTH__JWT_SECRET: "dev_jwt_secret_cambiar_en_produccion"
     _PIP_ADDITIONAL_REQUIREMENTS: "pandas pyarrow"
+    AIRFLOW_CONN_POSTGRES_LOCAL: "postgresql://airflow:airflow@postgres:5432/airflow"
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
+    - ./sql:/opt/airflow/sql
     - ./plugins:/opt/airflow/plugins
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:

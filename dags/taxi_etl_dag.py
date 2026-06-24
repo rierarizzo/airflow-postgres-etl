@@ -22,6 +22,7 @@ with DAG(
     start_date=datetime(2026, 6, 15),
     catchup=False,
     tags=["exercise_1"],
+    template_searchpath="/opt/airflow/sql",
 ) as dag:
     download_task = BashOperator(
         task_id="download_green_taxi_parquet",
@@ -46,13 +47,16 @@ with DAG(
         },
     )
 
-    # Task 3: Create table in PostgreSQL
-    # create_table_task = SQLExecuteQueryOperator(...)
+    create_table_task = SQLExecuteQueryOperator(
+        task_id="create_table_task",
+        conn_id="postgres_local",
+        sql="create_table__green_tripdata.sql",
+    )
 
     # Task 4: Insert data into PostgreSQL
     # insert_data_task = PythonOperator(...) o SQLExecuteQueryOperator(...)
 
     # Define dependencies (example)
     # download_task >> clean_data_task >> create_table_task >> insert_data_task
-    download_task >> clean_data_task
+    download_task >> clean_data_task >> create_table_task
     pass
