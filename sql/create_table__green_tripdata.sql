@@ -1,4 +1,4 @@
-CREATE TABLE green_tripdata (
+CREATE TABLE IF NOT EXISTS green_tripdata (
 	"VendorID" INTEGER, 
 	lpep_pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
 	lpep_dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
