@@ -4,6 +4,7 @@ from airflow import DAG
 from airflow.providers.standard.operators.bash import BashOperator
 from airflow.providers.standard.operators.python import PythonOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
+from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 default_args = {
     "owner": "airflow",
@@ -53,10 +54,26 @@ with DAG(
         sql="create_table__green_tripdata.sql",
     )
 
-    # Task 4: Insert data into PostgreSQL
-    # insert_data_task = PythonOperator(...) o SQLExecuteQueryOperator(...)
+    def insert_data(input_path, conn_id):
+        df = pd.read_parquet(input_path)
+        hook = PostgresHook(postgres_conn_id=conn_id)
+        engine = hook.get_sqlalchemy_engine()
+        df.to_sql(
+            "green_tripdata",
+            engine,
+            if_exists="append",
+            index=False,
+            chunksize=1000,
+            method="multi",
+        )
 
-    # Define dependencies (example)
-    # download_task >> clean_data_task >> create_table_task >> insert_data_task
-    download_task >> clean_data_task >> create_table_task
-    pass
+    insert_data_task = PythonOperator(
+        task_id="insert_data_task",
+        python_callable=insert_data,
+        op_kwargs={
+            "input_path": "/opt/airflow/green_tripdata_2026-04-cleaned.parquet",
+            "conn_id": "postgres_local",
+        },
+    )
+
+    download_task >> clean_data_task >> create_table_task >> insert_data_task
